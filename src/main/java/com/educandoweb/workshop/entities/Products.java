@@ -19,7 +19,8 @@ public class Products implements Serializable {
     private Double price;
     private String imgUrl;
 
-    @Transient
+    @ManyToMany
+    @JoinTable(name = "tb_products_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
     // É preciso instanciar aqui para que a coleção não comece como nula. É usado o hashSet pois em tese o Set não pode ser instanciado, mas o Set permite o HashSet.
 

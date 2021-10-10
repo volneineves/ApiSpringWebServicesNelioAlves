@@ -2,7 +2,9 @@ package com.educandoweb.workshop.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_category")
@@ -14,7 +16,8 @@ public class Category implements Serializable {
     private Long id;
     private String name;
 
-    //fazer associação na tabela produtos
+    @Transient
+    private Set<Products> products = new HashSet<>();
 
     public Category(){
 
@@ -23,6 +26,7 @@ public class Category implements Serializable {
     public Category(Long id, String name) {
         this.id = id;
         this.name = name;
+        //Não se coloca coleção em construtor pois ela já é instanciada lá em cima
     }
 
     public Long getId() {
@@ -39,6 +43,10 @@ public class Category implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Products> getProducts() {
+        return products;
     }
 
     @Override

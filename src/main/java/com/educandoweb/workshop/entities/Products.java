@@ -1,5 +1,7 @@
 package com.educandoweb.workshop.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -23,6 +25,9 @@ public class Products implements Serializable {
     @JoinTable(name = "tb_products_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
     // É preciso instanciar aqui para que a coleção não comece como nula. É usado o hashSet pois em tese o Set não pode ser instanciado, mas o Set permite o HashSet.
+
+    @OneToMany(mappedBy = "id.products")
+    private Set<OrderItem> items = new HashSet<>();
 
     public Products(){
 
@@ -79,6 +84,15 @@ public class Products implements Serializable {
 
     public Set<Category> getCategories() {
         return categories;
+    }
+
+    @JsonIgnore
+    public Set<Order> getOrders(){
+        Set<Order> set = new HashSet<>();
+        for(OrderItem x : items){
+            set.add(x.getOrder());
+        }
+        return set;
     }
 
     @Override
